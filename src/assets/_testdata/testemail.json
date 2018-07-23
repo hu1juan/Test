@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "email": "jeffritz@gmail.com",
+    "fullName": "Jeffritz Mangmang",
+    "isTaken": 0
+  },
+  {
+    "id": 2,
+    "email": "john@gmail.com",
+    "fullName": "John Mangmang",
+    "isTaken": 1
+  }
+]

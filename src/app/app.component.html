@@ -1,0 +1,64 @@
+<div class="container">
+  <div *ngIf="toggleEmailInput" class="email-wrapper shadow p-3 mb-5 bg-white rounded">
+    <img src="../assets/images/logo.png" alt="">
+    <br>
+    <br>
+    <h2>Welcome to
+      <label>DevPartners</label> Test
+    </h2>
+    <hr>
+    <br>
+    <h6>
+      NOTE: Please enter the email address you used as applicant.
+    </h6>
+    <br>
+    <div class="row">
+      <div class="col-md-9">
+        <input type="email" class="form-control" placeholder="e.g.  info@devpartners.co" [(ngModel)]="email" email required>
+        <i class="fa fa-envelope fa-2x">
+        </i>
+        <br>
+      </div>
+      <div class="col-md-3">
+        <button class="btn" (click)="go()">TAKE TEST</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!toggleEmailInput" class="test-wrapper shadow p-3 mb-5 bg-white rounded">
+    <img src="../assets/images/logo.png" alt="">
+    <br>
+    <br>
+    <div class="progress-wrapper">
+      <h4>Question 1/20</h4>
+      <br>
+      <ngb-progressbar type="info" [value]="5" [striped]="true" [showValue]="true" height="20px">
+      </ngb-progressbar>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <div class="question">
+      <h4>What is the capital of the Philippines?</h4>
+    </div>
+    <br>
+    <div class="choices text-left">
+      <h5>A.) Manila</h5>
+      <h5>B.) Davao</h5>
+      <h5>C.) Cebu</h5>
+      <h5>D.) Makati</h5>
+    </div>
+    <br>
+    <div class="answer">
+      <span *ngFor="let choice of choices" [ngClass]="{answerClass : choice === answerClass}" (click)="selectedAnswer(choice)">{{choice}}</span>
+    </div>
+    <br>
+    <br>
+    <button class="btn btn-nav btn-sm float-left">
+      << PREV</button>
+        <button class="btn btn-nav btn-sm float-right">NEXT >> </button>
+        <br>
+        <br>
+        <button class="btn btn-info">SUBMIT</button>
+  </div>
+</div>
