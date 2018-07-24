@@ -1,27 +1,58 @@
 [
   {
     "id": 1,
-    "question": "This is question #1?",
-    "choices": ["Number1 A", "Number1 B", "Number1 C", "Number1 D"]
+    "question": "Which scenario is true about the MVC framework?",
+    "choices": [
+      "a. MVC compartmentalizes roles by using shared data with a Model View",
+      "b. MVC makes development faster by having requests handled straight to the View",
+      "c. MVC secures the application with a Controller View separated from the Model",
+      "d. All of the above",
+      "e. None of the above"
+    ]
   },
   {
     "id": 2,
-    "question": "This is question #2?",
-    "choices": ["Number 2 A", "Number 2 B", "Number 2 C", "Number 2 D"]
+    "question":
+      "Which of the following best describes data abstraction in classes?",
+    "choices": [
+      "a. An object Car is obscured to a user via data firewall",
+      "b. An object Car is made visible to an inheritor Lamborghini via a public class attribute using { Get; }",
+      "c. An object Car is obscured to an inheriting class by separating Model and ViewModels",
+      "d. All of the above.",
+      "e. None of the above."
+    ]
   },
   {
     "id": 3,
-    "question": "This is question #3?",
-    "choices": ["Number 3 A", "Number 3 B", "Number 3 C", "Number 3 D"]
+    "question": "What are the common tests performed on APIs?",
+    "choices": [
+      "a. Verification of the API whether it correctly updates the view",
+      "b. Verify if the API returns the correct HTTP verb",
+      "c. Based on input conditions, check that returned values wrap the correct HTTP verb",
+      "d. All of the above",
+      "e. None of the above"
+    ]
   },
   {
     "id": 4,
-    "question": "This is question #4?",
-    "choices": ["Number 4 A", "Number 4 B", "Number 4 C", "Number 4 D"]
+    "question": "Which statement is not true about API endpoints?",
+    "choices": [
+      "a. Having two endpoints (i.e. /employees) is invalid and will result to a conflict. Different nouns are required for each endpoint",
+      "b. A DELETE method on an endpoint (i.e. /employees/10) will, in standard practice, delete employee 10",
+      "c. A DELETE method on an endpoint (i.e. /employees/10) will, in standard practice, delete the top 10 employees on db",
+      "d. Both A and B",
+      "e. Both A and C"
+    ]
   },
   {
     "id": 5,
-    "question": "This is question #5?",
-    "choices": ["Number 5 A", "Number 5 B", "Number 5 C", "Number 5 D"]
+    "question": "Which of the following statements is accurate?",
+    "choices": [
+      "a. Authentication checks identity. Authorization checks resources/actions allowed for identified requestor.",
+      "b. Authentication checks identity and authorizes use of resources",
+      "c. Authentication checks identity. Authorization re-checks identity and then checks authority to use resources",
+      "d. All of the above",
+      "e. None of the above"
+    ]
   }
 ]
