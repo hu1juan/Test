@@ -2,7 +2,7 @@
   text-align: center;
   .email-wrapper {
     animation: mymove 0.8s;
-    margin-top: 25%;
+    margin-top: 25vh;
     background-color: #fff;
     border-radius: 5px;
 
@@ -65,6 +65,10 @@
       }
     }
 
+    .question {
+      text-align: left;
+      padding: 0 5%;
+    }
     .btn-nav {
       background-color: #fec251;
       border: 2px solid darken(#fec251, 10);

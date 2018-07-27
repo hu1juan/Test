@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TestService } from '../app/_services/test.service';
+import { SwalComponent } from '@toverux/ngx-sweetalert2';
 
 @Component({
   selector: 'app-root',
@@ -7,30 +8,50 @@ import { TestService } from '../app/_services/test.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  @ViewChild('mySwal') private mySwal: SwalComponent;
+  @ViewChild('submitSwal') private submitSwal: SwalComponent;
   email: string;
-  answers = ['A', 'B', 'C', 'D', 'E'];
+  answers = [];
   questions: any;
   answerClass: string;
   currentQuestion = 1;
   toggleEmailInput = true;
   myAnswers = [];
   counter = 0;
+  userId: number;
+  userTestId: number;
+  max: number;
+  isRefresh = 0;
   constructor(private _TestService: TestService) {}
 
   go() {
     if (!this.email) {
-      return alert('Please provide email address.');
+      this.mySwal.title = 'ERROR!';
+      this.mySwal.text = 'Please provide email address.';
+      this.mySwal.type = 'error';
+      return this.mySwal.show();
     }
-    this._TestService.getEmails().subscribe(
+    this._TestService.getEmails(this.email).subscribe(
       data => {
+        if (!data['emailStatus']) {
+          this.mySwal.title = 'EMAIL NOT FOUND!';
+          this.mySwal.text =
+            'Please make sure that your email is registered in our pooling.';
+          this.mySwal.type = 'error';
+          return this.mySwal.show();
+        }
+        if (data['isTaken']) {
+          this.mySwal.title = 'Score: ' + data['score'];
+          this.mySwal.text = 'You already have taken the test.';
+          this.mySwal.type = 'success';
+          return this.mySwal.show();
+        }
         this.toggleEmailInput = false;
-        this._TestService.getQuestions().subscribe(
-          res => {
-            this.questions = res;
-            console.log(this.questions);
-          },
-          error => alert('error in getting question')
-        );
+        this.questions = data['question'];
+        this.userId = data['userId'];
+        this.userTestId = data['userTestId'];
+        this.max = this.questions.length;
+        this.checkChoices();
       },
       error => alert('error')
     );
@@ -38,58 +59,81 @@ export class AppComponent implements OnInit {
   next() {
     this.currentQuestion += 1;
     this.checkAnswer();
+    this.checkChoices();
   }
   prev() {
     this.currentQuestion -= 1;
     this.checkAnswer();
+    this.checkChoices();
   }
   selectedAnswer(answer) {
-    // this.myAnswers = this.myAnswers.map(x => {
-    //   if (x.id === this.questions[this.currentQuestion - 1].id) {
-    //     x.answer = answer;
-    //     return x;
-    //   }
-    //   this.myAnswers.push({
-    //     id: this.questions[this.currentQuestion - 1].id,
-    //     answer: answer
-    //   });
-    // });
-
-    // console.log(this.myAnswers);
-
-    // const found = this.myAnswers.some(function(el) {
-    //   return el.id === this.questions[this.currentQuestion - 1].id;
-    // });
-    // if (!found) {
-    // this.myAnswers.push({
-    //   id: this.questions[this.currentQuestion - 1].id,
-    //   answer: answer
-    // });
-    // }
-
     const index = this.myAnswers.findIndex(
-      x => x.id === this.questions[this.currentQuestion - 1].id
+      x => x.questionId === this.questions[this.currentQuestion - 1].questionId
     );
     if (index === -1) {
       this.myAnswers.push({
-        id: this.questions[this.currentQuestion - 1].id,
-        answer: answer
+        questionId: this.questions[this.currentQuestion - 1].questionId,
+        choiceId: answer.id,
+        answerStr: answer.choiceStr
       });
       this.counter++;
     } else {
-      this.myAnswers[index].answer = answer;
+      this.myAnswers[index].answerStr = answer.choiceStr;
+      this.myAnswers[index].choiceId = answer.id;
     }
-    this.answerClass = answer;
-    console.log(this.myAnswers);
+    this.answerClass = answer.choiceStr;
   }
 
   checkAnswer() {
     const index = this.myAnswers.findIndex(
-      x => x.id === this.questions[this.currentQuestion - 1].id
+      x => x.questionId === this.questions[this.currentQuestion - 1].questionId
     );
-    this.answerClass =
-      index === -1 ? null : this.myAnswers[this.currentQuestion - 1].answer;
-    console.log(index + 'check');
+    this.answerClass = index === -1 ? null : this.myAnswers[index].answerStr;
+  }
+
+  checkChoices() {
+    this.answers = [];
+    this.questions[this.currentQuestion - 1].choices.map(x => {
+      this.answers.push({
+        id: x.choiceId,
+        choiceStr: x.choiceStr.charAt(0)
+      });
+    });
+  }
+
+  confirm() {
+    if (this.counter !== this.max) {
+      this.mySwal.title = 'REMINDER!';
+      this.mySwal.text =
+        'Please answer all the questions provided in the test.';
+      this.mySwal.type = 'warning';
+      return this.mySwal.show();
+    }
+    this.submitSwal.allowOutsideClick = false;
+    return this.submitSwal.show();
+  }
+
+  submit() {
+    const answer = {
+      userTestId: this.userTestId,
+      userId: this.userId,
+      answers: this.myAnswers
+    };
+    this._TestService.submitAnswer(answer).subscribe(
+      res => {
+        this.isRefresh = 1;
+        this.mySwal.allowOutsideClick = false;
+        this.mySwal.title = 'Score: ' + res['score'];
+        this.mySwal.text = 'Thank you for completing the test.';
+        this.mySwal.type = 'success';
+        this.mySwal.show();
+      },
+      error => alert('Error found in submit')
+    );
+  }
+
+  refresh() {
+    location.reload();
   }
   ngOnInit() {}
 }

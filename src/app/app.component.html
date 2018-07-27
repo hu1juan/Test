@@ -1,6 +1,6 @@
 <div class="container">
   <div *ngIf="toggleEmailInput" class="email-wrapper shadow p-3 mb-5 bg-white rounded">
-    <img src="../assets/images/logo.png" alt="">
+    <img src="http://13.75.89.123:8081/onlinetest/assets/images/logo.png" alt="">
     <br>
     <br>
     <h2>Welcome to
@@ -26,40 +26,43 @@
   </div>
 
   <div *ngIf="!toggleEmailInput && questions" class="test-wrapper shadow p-3 mb-5 bg-white rounded">
-    <img src="../assets/images/logo.png" alt="">
+    <img src="http://13.75.89.123:8081/onlinetest/assets/images/logo.png" alt="">
     <br>
     <br>
     <div class="progress-wrapper">
-      <h4>Question {{currentQuestion}}/20</h4>
+      <h4>Question {{currentQuestion}}/{{max}}</h4>
       <br>
-      <ngb-progressbar type="info" [value]="counter" [striped]="true" [showValue]="true" height="20px" [max]=5>
+      <ngb-progressbar type="info" [value]="counter" [striped]="true" [showValue]="true" height="20px" [max]="max">
       </ngb-progressbar>
     </div>
     <br>
     <hr>
     <br>
     <div class="question">
-      <h4>{{questions[currentQuestion-1].question}}</h4>
+      <h4 [innerHTML]="questions[currentQuestion-1].questionStr"></h4>
     </div>
     <br>
     <div class="choices text-left">
-      <!-- <h5>A.) Manila</h5>
-      <h5>B.) Davao</h5>
-      <h5>C.) Cebu</h5>
-      <h5>D.) Makati</h5> -->
-      <h5 *ngFor="let choice of questions[currentQuestion-1].choices">{{choice}}</h5>
+      <h5 *ngFor="let choice of questions[currentQuestion-1].choices">{{choice.choiceStr}}</h5>
     </div>
     <br>
     <div class="answer">
-      <span *ngFor="let answer of answers" [ngClass]="{answerClass : answer === answerClass}" (click)="selectedAnswer(answer)">{{answer}}</span>
+      <span *ngFor="let answer of answers" [ngClass]="{answerClass : answer.choiceStr === answerClass}" (click)="selectedAnswer(answer)">{{answer.choiceStr | uppercase}}</span>
     </div>
     <br>
     <br>
     <button class="btn btn-nav btn-sm float-left" [disabled]="currentQuestion === 1" (click)="prev()">
       << PREV</button>
-        <button class="btn btn-nav btn-sm float-right" [disabled]="currentQuestion === 5" (click)="next()">NEXT >> </button>
+        <button class="btn btn-nav btn-sm float-right" [disabled]="currentQuestion === max" (click)="next()">NEXT >> </button>
         <br>
         <br>
-        <button class="btn btn-info">SUBMIT</button>
+        <button class="btn btn-info" (click)="confirm()">SUBMIT</button>
   </div>
+
+
+  <swal #mySwal title="" text="" type="warning" [focusConfirm]="true" (confirm)="isRefresh ? refresh(): 0" allowOutsideClick="false">
+  </swal>
+  <swal #submitSwal title="Are you sure?" text="Click cancel to review your answer." type="question" [showCancelButton]="true"
+    [focusCancel]="true" (confirm)="submit()" allowOutsideClick="false">
+  </swal>
 </div>

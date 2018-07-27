@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  emailUrl: '../assets/_testdata/testemail.json',
-  questionUrl: '../assets/_testdata/questions.json'
+  API: 'http://13.75.89.123:8081/onlinetest/api/'
 };
 
 /*
