@@ -9,9 +9,14 @@ import { END_POINT } from '../_config/constants.config';
 export class TestService {
   constructor(private http: HttpClient) {}
 
-  getEmails(email) {
-    return this.http.get(`${environment.API}${END_POINT.CHECK_EMAIL}${email}`);
+  getEmail(email) {
+    return this.http.get(`${environment.API2}${END_POINT.CHECK_EMAIL}${email}`);
   }
+
+  isTaken(data) {
+    return this.http.post(`${environment.API}${END_POINT.USER}`, data);
+  }
+
   submitAnswer(answer) {
     return this.http.post(`${environment.API}${END_POINT.SUBMIT}`, answer);
   }

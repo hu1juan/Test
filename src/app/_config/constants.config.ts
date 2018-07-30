@@ -1,4 +1,5 @@
 export const END_POINT = {
-  CHECK_EMAIL: 'Test/checkEmail/',
-  SUBMIT: 'Test/Submit'
+  CHECK_EMAIL: 'User/getDetails/',
+  SUBMIT: 'Test/Submit',
+  USER: 'User'
 };

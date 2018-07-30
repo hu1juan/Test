@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
       this.mySwal.type = 'error';
       return this.mySwal.show();
     }
-    this._TestService.getEmails(this.email).subscribe(
+    this._TestService.getEmail(this.email).subscribe(
       data => {
         if (!data['emailStatus']) {
           this.mySwal.title = 'EMAIL NOT FOUND!';
@@ -40,18 +40,25 @@ export class AppComponent implements OnInit {
           this.mySwal.type = 'error';
           return this.mySwal.show();
         }
-        if (data['isTaken']) {
-          this.mySwal.title = 'Score: ' + data['score'];
-          this.mySwal.text = 'You already have taken the test.';
-          this.mySwal.type = 'success';
-          return this.mySwal.show();
-        }
-        this.toggleEmailInput = false;
-        this.questions = data['question'];
-        this.userId = data['userId'];
-        this.userTestId = data['userTestId'];
-        this.max = this.questions.length;
-        this.checkChoices();
+        const userData = {
+          fullName: data['fullName'],
+          userEmail: this.email,
+          positionDesired: data['positionDesired']
+        };
+        this._TestService.isTaken(userData).subscribe(res => {
+          if (res['isTaken']) {
+            this.mySwal.title = 'Score: ' + res['score'];
+            this.mySwal.text = 'You already have taken the test.';
+            this.mySwal.type = 'success';
+            return this.mySwal.show();
+          }
+          this.toggleEmailInput = false;
+          this.questions = res['question'];
+          this.userId = res['userId'];
+          // this.userTestId = data['userTestId'];
+          this.max = this.questions.length;
+          this.checkChoices();
+        }, error => 'error');
       },
       error => alert('error')
     );
@@ -115,7 +122,7 @@ export class AppComponent implements OnInit {
 
   submit() {
     const answer = {
-      userTestId: this.userTestId,
+      // userTestId: this.userTestId,
       userId: this.userId,
       answers: this.myAnswers
     };
