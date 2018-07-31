@@ -45,22 +45,35 @@ export class AppComponent implements OnInit {
           userEmail: this.email,
           positionDesired: data['positionDesired']
         };
-        this._TestService.isTaken(userData).subscribe(res => {
-          if (res['isTaken']) {
-            this.mySwal.title = 'Score: ' + res['score'];
-            this.mySwal.text = 'You already have taken the test.';
-            this.mySwal.type = 'success';
+        this._TestService.isTaken(userData).subscribe(
+          res => {
+            if (res['isTaken']) {
+              this.mySwal.title = 'Score: ' + res['score'];
+              this.mySwal.text = 'You already have taken the test.';
+              this.mySwal.type = 'success';
+              return this.mySwal.show();
+            }
+            this.toggleEmailInput = false;
+            this.questions = res['question'];
+            this.userId = res['userId'];
+            // this.userTestId = data['userTestId'];
+            this.max = this.questions.length;
+            this.checkChoices();
+          },
+          error => {
+            this.mySwal.title = 'ERROR!';
+            this.mySwal.text = 'Please try again later.';
+            this.mySwal.type = 'error';
             return this.mySwal.show();
           }
-          this.toggleEmailInput = false;
-          this.questions = res['question'];
-          this.userId = res['userId'];
-          // this.userTestId = data['userTestId'];
-          this.max = this.questions.length;
-          this.checkChoices();
-        }, error => 'error');
+        );
       },
-      error => alert('error')
+      error => {
+        this.mySwal.title = 'ERROR!';
+        this.mySwal.text = 'Please try again later.';
+        this.mySwal.type = 'error';
+        return this.mySwal.show();
+      }
     );
   }
   next() {
