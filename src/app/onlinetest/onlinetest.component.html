@@ -1,0 +1,70 @@
+<div class="container">
+  <div *ngIf="toggleEmailInput" class="email-wrapper shadow p-3 mb-5 bg-white rounded">
+    <div class="row">
+      <div class="col-md-6">
+        <img src="./assets/images/img1.png" class="img-thumbnail">
+      </div>
+      <div class="col-md-6">
+        <h1>
+          Welcome to
+          <br>
+          <span class="text-black">Dev Partners</span> Test
+          <br>
+          <h5>Note: Do not refresh the page while taking the test.</h5>
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-9">
+        <input type="email" class="form-control" placeholder="e.g.  info@devpartners.co" [(ngModel)]="email" email="true" required>
+        <i class="fa fa-envelope fa-2x">
+        </i>
+        <br>
+      </div>
+      <div class="col-md-3">
+        <button class="btn" (click)="go()">TAKE TEST</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!toggleEmailInput && questions" class="test-wrapper shadow p-3 mb-5 bg-white rounded">
+    <img src="./assets/images/logo.png" alt="">
+    <br>
+    <br>
+    <div class="progress-wrapper">
+      <h4>Question {{currentQuestion}}/{{max}}</h4>
+      <br>
+      <ngb-progressbar type="warning" [value]="counter" [striped]="true" [showValue]="true" height="20px" [max]="max">
+      </ngb-progressbar>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <div class="row">
+      <div class="col-md-6 question">
+        <h4 [innerHTML]="questions[currentQuestion-1].questionStr"></h4>
+      </div>
+      <div class="col-md-6 choices text-left">
+        <h6 *ngFor="let choice of questions[currentQuestion-1].choices" [ngClass]="{answerClass : choice.choiceStr === answerClass}"
+          (click)="selectedAnswer(choice)">{{choice.choiceStr}}</h6>
+        <br>
+        <div class="offset-md-4 col-md-8">
+          <button class="btn btn-nav btn-sm float-left" [disabled]="currentQuestion === 1" (click)="prev()">
+            << PREV</button>
+              <button class="btn btn-nav btn-sm float-right" *ngIf="currentQuestion !== max" (click)="next()">NEXT >> </button>
+              <button *ngIf="currentQuestion === max" class="btn btn-info btn-sm float-right" (click)="confirm()">SUBMIT</button>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="answer">
+      <span *ngFor="let answer of answers" [ngClass]="{answerClass : answer.choiceStr === answerClass}" (click)="selectedAnswer(answer)">{{answer.choiceStr | uppercase}}</span>
+    </div> -->
+  </div>
+
+
+  <swal #mySwal title="" text="" type="warning" [focusConfirm]="true" (confirm)="isRefresh ? refresh(): 0" allowOutsideClick="false">
+  </swal>
+  <swal #submitSwal title="Are you sure?" text="Click cancel to review your answer." type="question" [showCancelButton]="true"
+    [focusCancel]="true" (confirm)="submit()" allowOutsideClick="false">
+  </swal>
+</div>

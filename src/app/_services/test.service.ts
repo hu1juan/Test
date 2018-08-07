@@ -18,6 +18,10 @@ export class TestService {
   }
 
   submitAnswer(answer) {
-    return this.http.post(`${environment.API}${END_POINT.SUBMIT}`, answer);
+    return this.http.post(`${environment.API2}${END_POINT.SUBMIT}`, answer);
+  }
+
+  getQuestions(data) {
+    return this.http.post(`${environment.API2}${END_POINT.TEST}`, data);
   }
 }

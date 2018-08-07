@@ -82,6 +82,16 @@
           }
         }
       }
+
+      .answerClass {
+        border-color: #fff3dd;
+        background-color: #fff3dd;
+
+        &::first-letter {
+          background-color: #ffbb41;
+          color: #fff;
+        }
+      }
     }
 
     .answer {
@@ -100,11 +110,6 @@
           cursor: pointer;
           transition: 0.1s ease-in-out;
         }
-      }
-
-      .answerClass {
-        background: #ffbb41;
-        border: 2px solid darken(#ffbb41, 10);
       }
     }
 
