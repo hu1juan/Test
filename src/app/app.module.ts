@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { RedirectComponent } from './redirect/redirect.component';
 import { OnlinetestComponent } from './onlinetest/onlinetest.component';
 import { AppRoutingModule } from './app-routing.module';
+import { NgSpinKitModule } from 'ng-spin-kit';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AppRoutingModule } from './app-routing.module';
     HttpClientModule,
     FormsModule,
     SweetAlert2Module.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    NgSpinKitModule
   ],
   providers: [TestService],
   bootstrap: [AppComponent]

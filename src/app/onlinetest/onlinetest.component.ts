@@ -2,12 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TestService } from '../_services/test.service';
 import { SwalComponent } from '@toverux/ngx-sweetalert2';
 import { FormControl, Validators } from '@angular/forms';
-import {
-  ActivatedRoute,
-  UrlSegment,
-  Router,
-  PRIMARY_OUTLET
-} from '@angular/router';
+import { UrlSegment, Router, PRIMARY_OUTLET } from '@angular/router';
 
 @Component({
   selector: 'app-onlinetest',
@@ -30,6 +25,7 @@ export class OnlinetestComponent implements OnInit {
   max: number;
   isRefresh = 0;
   testTypeId: number;
+  isSubmit = false;
   constructor(private _TestService: TestService, private _route: Router) {}
 
   go() {
@@ -49,20 +45,6 @@ export class OnlinetestComponent implements OnInit {
       this.mySwal.type = 'error';
       return this.mySwal.show();
     }
-    // this._TestService.getEmail(this.email).subscribe(
-    //   data => {
-    // if (!data['emailStatus']) {
-    //   this.mySwal.title = 'EMAIL NOT FOUND!';
-    //   this.mySwal.text =
-    //     'Please make sure that your email is registered in our pooling.';
-    //   this.mySwal.type = 'error';
-    //   return this.mySwal.show();
-    // }
-    // const userData = {
-    //   fullName: data['fullName'],
-    //   userEmail: this.email,
-    //   positionDesired: data['positionDesired']
-    // };
 
     const tree = this._route.parseUrl(this._route.url);
     const g = tree.root.children[PRIMARY_OUTLET];
@@ -83,7 +65,7 @@ export class OnlinetestComponent implements OnInit {
     this._TestService.getQuestions(userData).subscribe(
       res => {
         if (res['isTaken']) {
-          this.mySwal.title = 'Score: ' + res['score'];
+          this.mySwal.title = 'Greetings  !';
           this.mySwal.text = 'You already have taken the test.';
           this.mySwal.type = 'success';
           return this.mySwal.show();
@@ -91,7 +73,6 @@ export class OnlinetestComponent implements OnInit {
         this.toggleEmailInput = false;
         this.questions = res['question'];
         this.userId = res['userId'];
-        // this.userTestId = data['userTestId'];
         this.max = this.questions.length;
         this.checkChoices();
       },
@@ -102,14 +83,6 @@ export class OnlinetestComponent implements OnInit {
         return this.mySwal.show();
       }
     );
-    // },
-    // error => {
-    //   this.mySwal.title = 'ERROR!';
-    //   this.mySwal.text = 'Please try again later.';
-    //   this.mySwal.type = 'error';
-    //   return this.mySwal.show();
-    // }
-    // );
   }
   next() {
     this.currentQuestion += 1;
@@ -169,8 +142,8 @@ export class OnlinetestComponent implements OnInit {
   }
 
   submit() {
+    this.isSubmit = true;
     const answer = {
-      // userTestId: this.userTestId,
       userId: this.userId,
       testId: this.testTypeId,
       answers: this.myAnswers
@@ -179,12 +152,18 @@ export class OnlinetestComponent implements OnInit {
       res => {
         this.isRefresh = 1;
         this.mySwal.allowOutsideClick = false;
-        this.mySwal.title = 'Score: ' + res['score'];
+        this.mySwal.title = 'GOOD LUCK!';
         this.mySwal.text = 'Thank you for completing the test.';
         this.mySwal.type = 'success';
         this.mySwal.show();
+        this.isSubmit = false;
       },
-      error => alert('Error found in submit')
+      error => {
+        this.mySwal.title = 'ERROR!';
+        this.mySwal.text = 'Something went wrong. Please try again later.';
+        this.mySwal.type = 'error';
+        return this.mySwal.show();
+      }
     );
   }
 

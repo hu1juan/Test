@@ -22,7 +22,7 @@
         <br>
       </div>
       <div class="col-md-3">
-        <button class="btn" (click)="go()">TAKE TEST</button>
+        <button class="btn" (click)="go()">START TEST</button>
       </div>
     </div>
   </div>
@@ -34,7 +34,7 @@
     <div class="progress-wrapper">
       <h4>Question {{currentQuestion}}/{{max}}</h4>
       <br>
-      <ngb-progressbar type="warning" [value]="counter" [striped]="true" [showValue]="true" height="20px" [max]="max">
+      <ngb-progressbar type="warning" [value]="counter" [striped]="true" [showValue]="true" height="20px" [max]="max" [animated]="isSubmit">
       </ngb-progressbar>
     </div>
     <br>
@@ -48,11 +48,15 @@
         <h6 *ngFor="let choice of questions[currentQuestion-1].choices" [ngClass]="{answerClass : choice.choiceStr === answerClass}"
           (click)="selectedAnswer(choice)">{{choice.choiceStr}}</h6>
         <br>
-        <div class="offset-md-4 col-md-8">
+        <div *ngIf="!isSubmit" class="offset-md-4 col-md-8">
           <button class="btn btn-nav btn-sm float-left" [disabled]="currentQuestion === 1" (click)="prev()">
             << PREV</button>
               <button class="btn btn-nav btn-sm float-right" *ngIf="currentQuestion !== max" (click)="next()">NEXT >> </button>
-              <button *ngIf="currentQuestion === max" class="btn btn-info btn-sm float-right" (click)="confirm()">SUBMIT</button>
+              <button *ngIf="currentQuestion === max" class="btn btn-info btn-sm float-right" (click)="confirm()" [disabled]="isSubmit">SUBMIT</button>
+        </div>
+        <div class="myspinkit" *ngIf="isSubmit">
+          <h5 class="text-center">Processing, please wait.</h5>
+          <sk-three-bounce></sk-three-bounce>
         </div>
       </div>
     </div>
