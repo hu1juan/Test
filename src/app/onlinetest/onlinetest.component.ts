@@ -10,8 +10,10 @@ import { UrlSegment, Router, PRIMARY_OUTLET } from '@angular/router';
   styleUrls: ['./onlinetest.component.scss']
 })
 export class OnlinetestComponent implements OnInit {
-  @ViewChild('mySwal') private mySwal: SwalComponent;
-  @ViewChild('submitSwal') private submitSwal: SwalComponent;
+  @ViewChild('mySwal')
+  private mySwal: SwalComponent;
+  @ViewChild('submitSwal')
+  private submitSwal: SwalComponent;
   email: string;
   answers = [];
   questions: any;
@@ -26,13 +28,16 @@ export class OnlinetestComponent implements OnInit {
   isRefresh = 0;
   testTypeId: number;
   isSubmit = false;
+  isStartTest = false;
   constructor(private _TestService: TestService, private _route: Router) {}
 
   go() {
+    this.isStartTest = true;
     if (!this.email) {
       this.mySwal.title = 'ERROR!';
       this.mySwal.text = 'Please provide email address.';
       this.mySwal.type = 'error';
+      this.mySwal.allowOutsideClick = false;
       return this.mySwal.show();
     }
     const email = new FormControl(this.email, [
@@ -43,18 +48,21 @@ export class OnlinetestComponent implements OnInit {
       this.mySwal.title = 'ERROR!';
       this.mySwal.text = 'Please provide valid email address.';
       this.mySwal.type = 'error';
+      this.mySwal.allowOutsideClick = false;
       return this.mySwal.show();
     }
 
     const tree = this._route.parseUrl(this._route.url);
     const g = tree.root.children[PRIMARY_OUTLET];
     const s = g.segments;
-    const path = s[0].path;
+    const path = s[s.length - 1].path;
     const testType = [
       { id: 1, type: 'frontend' },
       { id: 2, type: 'backend' },
       { id: 3, type: 'database' },
-      { id: 4, type: 'corevalues' }
+      { id: 4, type: 'corevalues' },
+      { id: 5, type: 'english' },
+      { id: 6, type: 'php' }
     ];
     const index = testType.findIndex(x => x.type === path);
     this.testTypeId = testType[index].id;
@@ -68,6 +76,7 @@ export class OnlinetestComponent implements OnInit {
           this.mySwal.title = 'Greetings  !';
           this.mySwal.text = 'You already have taken the test.';
           this.mySwal.type = 'success';
+          this.mySwal.allowOutsideClick = false;
           return this.mySwal.show();
         }
         this.toggleEmailInput = false;
@@ -80,6 +89,7 @@ export class OnlinetestComponent implements OnInit {
         this.mySwal.title = 'ERROR!';
         this.mySwal.text = 'Please try again later.';
         this.mySwal.type = 'error';
+        this.mySwal.allowOutsideClick = false;
         return this.mySwal.show();
       }
     );
@@ -135,6 +145,7 @@ export class OnlinetestComponent implements OnInit {
       this.mySwal.text =
         'Please answer all the questions provided in the test.';
       this.mySwal.type = 'warning';
+      this.mySwal.allowOutsideClick = false;
       return this.mySwal.show();
     }
     this.submitSwal.allowOutsideClick = false;
@@ -169,6 +180,10 @@ export class OnlinetestComponent implements OnInit {
 
   refresh() {
     location.reload();
+  }
+
+  startTest() {
+    this.isStartTest = false;
   }
   ngOnInit() {}
 }

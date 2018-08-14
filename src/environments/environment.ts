@@ -4,10 +4,8 @@
 
 export const environment = {
   production: false,
-  // API: 'http://13.75.89.123:8081/onlinetest/api/',
-  // API2: 'http://13.75.89.123:8081/pooling/api/'
-  API: '/onlinetest/api/',
-  API2: '/pooling/api/'
+  // API: 'http://13.75.89.123:8081/pooling/api/'
+  API: '/pooling/api/'
 };
 
 /*

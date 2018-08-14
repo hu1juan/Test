@@ -6,6 +6,7 @@ import { RedirectComponent } from './redirect/redirect.component';
 const routes: Routes = [
   { path: 'frontend', component: OnlinetestComponent },
   { path: 'backend', component: OnlinetestComponent },
+  { path: 'backend/php', component: OnlinetestComponent },
   { path: 'database', component: OnlinetestComponent },
   { path: 'corevalues', component: OnlinetestComponent },
   { path: 'english', component: OnlinetestComponent },

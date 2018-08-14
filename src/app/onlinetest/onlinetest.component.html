@@ -22,7 +22,7 @@
         <br>
       </div>
       <div class="col-md-3">
-        <button class="btn" (click)="go()">START TEST</button>
+        <button class="btn" (click)="go()" [disabled]="isStartTest">START TEST</button>
       </div>
     </div>
   </div>
@@ -66,7 +66,7 @@
   </div>
 
 
-  <swal #mySwal title="" text="" type="warning" [focusConfirm]="true" (confirm)="isRefresh ? refresh(): 0" allowOutsideClick="false">
+  <swal #mySwal title="" text="" type="warning" [focusConfirm]="true" (confirm)="isRefresh ? refresh(): startTest()" allowOutsideClick="false">
   </swal>
   <swal #submitSwal title="Are you sure?" text="Click cancel to review your answer." type="question" [showCancelButton]="true"
     [focusCancel]="true" (confirm)="submit()" allowOutsideClick="false">
