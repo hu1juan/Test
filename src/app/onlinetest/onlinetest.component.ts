@@ -15,18 +15,17 @@ export class OnlinetestComponent implements OnInit {
   @ViewChild('submitSwal')
   private submitSwal: SwalComponent;
   email: string;
-  answers = [];
   questions: any;
   answerClass: string;
-  currentQuestion = 1;
-  toggleEmailInput = true;
   myAnswers = [];
+  currentQuestion = 1;
   counter = 0;
+  isRefresh = 0;
   userId: number;
   userTestId: number;
-  max: number;
-  isRefresh = 0;
   testTypeId: number;
+  max: number;
+  toggleEmailInput = true;
   isSubmit = false;
   isStartTest = false;
   constructor(private _TestService: TestService, private _route: Router) {}
@@ -62,7 +61,8 @@ export class OnlinetestComponent implements OnInit {
       { id: 3, type: 'database' },
       { id: 4, type: 'corevalues' },
       { id: 5, type: 'english' },
-      { id: 6, type: 'php' }
+      { id: 6, type: 'php' },
+      { id: 7, type: 'mobile' }
     ];
     const index = testType.findIndex(x => x.type === path);
     this.testTypeId = testType[index].id;
@@ -83,7 +83,6 @@ export class OnlinetestComponent implements OnInit {
         this.questions = res['question'];
         this.userId = res['userId'];
         this.max = this.questions.length;
-        this.checkChoices();
       },
       error => {
         this.mySwal.title = 'ERROR!';
@@ -97,12 +96,10 @@ export class OnlinetestComponent implements OnInit {
   next() {
     this.currentQuestion += 1;
     this.checkAnswer();
-    this.checkChoices();
   }
   prev() {
     this.currentQuestion -= 1;
     this.checkAnswer();
-    this.checkChoices();
   }
   selectedAnswer(answer) {
     const index = this.myAnswers.findIndex(
@@ -127,16 +124,6 @@ export class OnlinetestComponent implements OnInit {
       x => x.questionId === this.questions[this.currentQuestion - 1].questionId
     );
     this.answerClass = index === -1 ? null : this.myAnswers[index].answerStr;
-  }
-
-  checkChoices() {
-    this.answers = [];
-    this.questions[this.currentQuestion - 1].choices.map(x => {
-      this.answers.push({
-        id: x.choiceId,
-        choiceStr: x.choiceStr.charAt(0)
-      });
-    });
   }
 
   confirm() {

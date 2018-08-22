@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // API: 'http://13.75.89.123:8081/pooling/api/'
-  API: '/pooling/api/'
+  API: 'http://13.75.89.123:8081/pooling/api/'
+  // API: '/pooling/api/'
 };
 
 /*

@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'backend', component: OnlinetestComponent },
   { path: 'backend/php', component: OnlinetestComponent },
   { path: 'database', component: OnlinetestComponent },
+  { path: 'mobile', component: OnlinetestComponent },
   { path: 'corevalues', component: OnlinetestComponent },
   { path: 'english', component: OnlinetestComponent },
   { path: '404', component: RedirectComponent },
