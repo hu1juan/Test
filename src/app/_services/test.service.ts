@@ -16,4 +16,8 @@ export class TestService {
   getQuestions(data) {
     return this.http.post(`${environment.API}${END_POINT.TEST}`, data);
   }
+
+  addName(data) {
+    return this.http.put(`${environment.API}${END_POINT.NAME}`, data);
+  }
 }

@@ -66,9 +66,10 @@
   </div>
 
 
-  <swal #mySwal title="" text="" type="warning" [focusConfirm]="true" (confirm)="isRefresh ? refresh(): startTest()" allowOutsideClick="false">
+  <swal #mySwal title="" text="" type="warning" [focusConfirm]="true" (confirm)="isRefresh ? refresh(): startTest()" allowOutsideClick="false"
+    allowEscapeKey="false">
   </swal>
   <swal #submitSwal title="Are you sure?" text="Click cancel to review your answer." type="question" [showCancelButton]="true"
-    [focusCancel]="true" (confirm)="submit()" allowOutsideClick="false">
+    [focusCancel]="true" (confirm)="submit()" allowOutsideClick="false" allowEscapeKey="false">
   </swal>
 </div>

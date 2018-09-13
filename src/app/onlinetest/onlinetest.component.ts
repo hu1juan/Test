@@ -3,6 +3,7 @@ import { TestService } from '../_services/test.service';
 import { SwalComponent } from '@toverux/ngx-sweetalert2';
 import { FormControl, Validators } from '@angular/forms';
 import { UrlSegment, Router, PRIMARY_OUTLET } from '@angular/router';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-onlinetest',
@@ -72,6 +73,73 @@ export class OnlinetestComponent implements OnInit {
     };
     this._TestService.getQuestions(userData).subscribe(
       res => {
+        if (!res['hasName'] && res['isOutsider']) {
+          swal
+            .mixin({
+              input: 'text',
+              confirmButtonText: 'Next &rarr;',
+              showCancelButton: false,
+              progressSteps: ['1', '2'],
+              allowOutsideClick: false,
+              allowEscapeKey: false
+            })
+            .queue([
+              {
+                title: 'Please fill the ff.',
+                text: 'Enter your firstname',
+                inputPlaceholder: 'Firstname',
+                inputValidator: value => {
+                  return !value && 'Firstname is required!';
+                }
+              },
+              {
+                title: 'Please fill the ff',
+                text: 'Enter your lastname',
+                inputPlaceholder: 'Lastname',
+                inputValidator: value => {
+                  return !value && 'Lastname is required!';
+                }
+              }
+            ])
+            .then(result => {
+              if (result.value) {
+                const data = {
+                  userId: this.userId,
+                  firstName: result.value[0],
+                  lastName: result.value[1]
+                };
+                this._TestService.addName(data).subscribe(
+                  resp => {
+                    const toast = swal.mixin({
+                      toast: true,
+                      position: 'top-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'success',
+                      title: 'Name is saved successfully.'
+                    });
+                  },
+                  err => {
+                    this.refresh();
+                    const toast = swal.mixin({
+                      toast: true,
+                      position: 'top-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    toast({
+                      type: 'error',
+                      title: 'Error found!'
+                    });
+                  }
+                );
+              }
+            });
+        }
         if (res['isTaken']) {
           this.mySwal.title = 'Greetings  !';
           this.mySwal.text = 'You already have taken the test.';
